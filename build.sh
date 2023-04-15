@@ -23,11 +23,15 @@ cat > /etc/apt/sources.list.d/base-linux.list <<EOF
 deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy main
 EOF
 
+# Add vanilla repo key
+apt-key add "$BASE_DIR"/etc/config/archives/vanilla.key
+apt-key add "$BASE_DIR"/etc/config/archives/vanilla-main.key
+
 # Add vanilla keyring
 cp "$BASE_DIR"/etc/config/includes.chroot/usr/share/keyrings/vanilla_keyring.gpg /usr/share/keyrings/
 
 # Remove stock debian sources
-rm -f /etc/apt/sources.list.d/debian.sources.list
+rm -f /etc/apt/sources.list.d/debian.sources
 
 echo -e "----------------------"
 echo -e "INSTALL VANILLA REPO"
