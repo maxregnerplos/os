@@ -23,9 +23,8 @@ cat > /etc/apt/sources.list.d/base-linux.list <<EOF
 deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy main
 EOF
 
-# Add base linux repo keys
-curl -sSL https://repo.baselinux.org/KEY.gpg | apt-key add -
-cp "${BASE_DIR}/etc/config/includes.chroot/usr/share/keyrings/base_linux_keyring.gpg" /usr/share/keyrings/
+# Add vanilla keyring
+cp "$BASE_DIR"/etc/config/includes.chroot/usr/share/keyrings/vanilla_keyring.gpg /usr/share/keyrings/
 
 # Remove stock debian sources
 rm -f /etc/apt/sources.list.d/debian.sources.list
