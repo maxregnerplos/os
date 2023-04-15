@@ -19,8 +19,17 @@ echo -e "----------------------"
 
 # Add base linux sources
 apt install -y curl
-cat > /etc/apt/sources.list.d/base-linux.list <<EOF
+cat > /etc/config/archives/vanilla.list <<EOF
 deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy main
+EOF
+
+# Add vanilla repo key
+apt-key add "$BASE_DIR"/etc/config/archives/vanilla.key
+apt-key add "$BASE_DIR"/etc/config/archives/vanilla-main.key
+
+# Add vanilla sources
+cat > /etc/apt/sources.list.d/vanilla-base.list <<EOF
+deb [arch=amd64] http://repo.vanillaos.org/ $BASECODENAME main
 EOF
 
 # Add vanilla repo key
@@ -33,30 +42,13 @@ cp "$BASE_DIR"/etc/config/includes.chroot/usr/share/keyrings/vanilla_keyring.gpg
 # Remove stock debian sources
 rm -f /etc/apt/sources.list.d/debian.sources
 
-echo -e "----------------------"
-echo -e "INSTALL VANILLA REPO"
-echo -e "----------------------"
-
-# Add vanilla sources
-cat > /etc/apt/sources.list.d/vanilla-base.list <<EOF
-deb [arch=amd64] http://repo.vanillaos.org/ $BASECODENAME main
-EOF
-
-# Add vanilla repo keys
-apt install -y curl
-curl -sSL https://repo.vanillaos.org/KEY.gpg | apt-key add -
-curl -sSL https://repo.vanillaos.org/MAIN-KEY.gpg | apt-key add -
-cp "${BASE_DIR}/etc/config/includes.chroot/usr/share/keyrings/vanilla_keyring.gpg" /usr/share/keyrings/
-
-# Remove stock debian sources
-rm -f /etc/apt/sources.list.d/debian.sources.list
-
-echo -e "----------------------"
-echo -e "INSTALL DEPENDENCIES"
-echo -e "----------------------"
-
+echo -e "
+#----------------------#
+# INSTALL DEPENDENCIES #
+#----------------------#
+"
 apt-get update
-apt-get install -y live-build patch gnupg2 binutils lz4 ca-certificates
+apt-get install -y live-build patch gnupg2 binutils zstd ca-certificates
 dpkg -i debs/*.deb
 
 # TODO: workaround a bug in lb by increasing number of blocks for creating efi.img
@@ -80,6 +72,7 @@ build () {
   ln -s "package-lists.$PACKAGE_LISTS_SUFFIX" "config/package-lists"
 
   echo -e "
+
 #------------------#
 # LIVE-BUILD CLEAN #
 #------------------#
@@ -124,4 +117,4 @@ if [[ "$ARCH" == "all" ]]; then
     build amd64
 else
     build "$ARCH"
-    fi
+fi
