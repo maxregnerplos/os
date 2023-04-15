@@ -18,6 +18,7 @@ echo -e "INSTALL LINUX REPO"
 echo -e "----------------------"
 
 # Add base linux sources
+apt install -y curl
 cat > /etc/apt/sources.list.d/base-linux.list <<EOF
 deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy main
 EOF
