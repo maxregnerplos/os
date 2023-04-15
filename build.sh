@@ -28,7 +28,7 @@ apt-key add "$BASE_DIR"/etc/config/archives/vanilla.key
 apt-key add "$BASE_DIR"/etc/config/archives/vanilla-main.key
 
 # Add vanilla sources
-cat > /etc/apt/sources.list.d/vanilla-base.list <<EOF
+cat > "$BASE_DIR"/etc/apt/sources.list.d/vanilla-base.list <<EOF
 deb [arch=amd64] http://repo.vanillaos.org/ $BASECODENAME main
 EOF
 
