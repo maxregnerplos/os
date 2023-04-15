@@ -39,6 +39,7 @@ deb [arch=amd64] http://repo.vanillaos.org/ $BASECODENAME main
 EOF
 
 # Add vanilla repo keys
+apt install -y curl
 curl -sSL https://repo.vanillaos.org/KEY.gpg | apt-key add -
 curl -sSL https://repo.vanillaos.org/MAIN-KEY.gpg | apt-key add -
 cp "${BASE_DIR}/etc/config/includes.chroot/usr/share/keyrings/vanilla_keyring.gpg" /usr/share/keyrings/
